@@ -15,6 +15,11 @@ app.get('/', function (req, res, next) {
   }
 })
 
+app.get('/cv', function(req, res){
+  var file = __dirname + '/Upload-folder/NikhilVedi.txt';
+  res.download(file); // Set disposition and send it.
+});
+
 app.listen(process.env.PORT || 3000, function () {
   console.log('Listening on http://localhost:' + (process.env.PORT || 3000))
 })
