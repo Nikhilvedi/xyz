@@ -15,8 +15,8 @@ app.get('/', function (req, res, next) {
   }
 })
 
-app.get('/cv', function(req, res){
-  var file = __dirname + '/Upload-folder/NikhilVedi.txt';
+app.get('/download', function(req, res){
+  var file = __dirname + '/Upload-folder/openme.txt';
   res.download(file); // Set disposition and send it.
 });
 
