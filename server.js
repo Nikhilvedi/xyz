@@ -1,10 +1,12 @@
 var express = require('express'),
   logger = require('morgan'),
   app = express(),
+  PdfReader = require('pdfreader'),
+  fs = require("fs"),
   template = require('jade').compileFile(__dirname + '/source/templates/homepage.jade')
 
-app.use(logger('dev'))
-app.use(express.static(__dirname + '/static'))
+app.use(logger('dev'));
+app.use(express.static(__dirname + '/static'));
 
 app.get('/', function(req, res, next) {
   try {
@@ -24,14 +26,7 @@ app.get('/download', function(req, res) {
 
 app.get('/gitflow', function(req, res) {
    var file = __dirname + '/Upload-folder/gitflow.pdf';
-  new PdfReader().parseFileItems(file, function(err, item) {
-    if (err)
-      callback(err);
-    else if (!item)
-      callback();
-    else if (item.text)
-      console.log(item.text);
-  });
+    res.download(file);
 });
 
 app.listen(process.env.PORT || 3000, function() {
