@@ -3,12 +3,6 @@ var express = require('express'),
   app = express(),
   template = require('jade').compileFile(__dirname + '/source/templates/homepage.jade')
 
-import YouTubePlayer from 'youtube-player';
-
-let player;
-player = YouTubePlayer('video-player');
-player.loadVideoById('dQw4w9WgXcQ');
-
 app.use(logger('dev'));
 app.use(express.static(__dirname + '/static'));
 
@@ -34,7 +28,7 @@ app.get('/gitflow', function(req, res) {
 });
 
 app.get('/rickroll', function(req, res) {
-    player.playVideo();
+    res.send("No");
 })
 
 app.listen(process.env.PORT || 3000, function() {
