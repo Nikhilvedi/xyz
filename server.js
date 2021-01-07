@@ -2,7 +2,9 @@ var express = require('express'),
   logger = require('morgan'),
   app = express(),
   template = require('jade').compileFile(__dirname + '/source/templates/homepage.jade'),
-    starwars = require('jade').compileFile(__dirname + '/source/templates/starwars.jade')
+    starwars = require('jade').compileFile(__dirname + '/source/templates/starwars.jade'),
+    lily = require('jade').compileFile(__dirname + '/source/templates/lily.jade')
+
 
 app.use(logger('dev'));
 app.use(express.static(__dirname + '/static'));
@@ -33,6 +35,17 @@ app.get('/rickroll', function(req, res) {
 
 app.get('/hellothere', function(req, res) {
   res.send("General Kenobi");
+})
+
+app.get('/lily', function(req, res, next) {
+  try {
+    var html = lily({
+      title: 'Home'
+    })
+    res.send(html)
+  } catch (e) {
+    next(e)
+  }
 })
 
 app.get('/thisiswherethefunbegins', function(req, res, next) {
