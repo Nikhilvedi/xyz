@@ -17,18 +17,25 @@ app.get('/', function(req, res, next) {
   }
 })
 
+app.get('/blog',() => {
+
+})
+
 app.get('/download', function(req, res) {
   var file = __dirname + '/Upload-folder/openme.txt';
   res.download(file); // Set disposition and send it.
 });
 
-app.get('/gitflow', function(req, res) {
-   var file = __dirname + '/Upload-folder/gitflow.pdf';
-    res.download(file);
-});
-
 app.get('/rickroll', function(req, res) {
     res.send("No");
+})
+
+app.get('/generalkenobi', function(req, res) {
+  res.send("Hello there");
+})
+
+app.get('/thisiswherethefunbegins', function(req, res) {
+  res.send("https://static.wikia.nocookie.net/afbe0a28-af5a-4073-9579-1b56c0a33e22");
 })
 
 app.listen(process.env.PORT || 3000, function() {
