@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="16eba358-1eab-4e70-a639-5c587da70718" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/static/img/lil.jpeg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/stylesheets/index.styl" beforeDir="false" afterPath="$PROJECT_DIR$/source/stylesheets/index.styl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/templates/pod.jade" beforeDir="false" afterPath="$PROJECT_DIR$/source/templates/pod.jade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/templates/lily.jade" beforeDir="false" afterPath="$PROJECT_DIR$/source/templates/lily.jade" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +32,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Upload-folder" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/static/img" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -48,6 +48,7 @@
       <recent name="$PROJECT_DIR$/static/img" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/static/img" />
       <recent name="$PROJECT_DIR$/Upload-folder" />
       <recent name="$PROJECT_DIR$/source/templates" />
     </key>
@@ -66,7 +67,7 @@
       <workItem from="1546445534445" duration="16000" />
       <workItem from="1589823345448" duration="135000" />
       <workItem from="1589823499261" duration="758000" />
-      <workItem from="1610027739527" duration="3288000" />
+      <workItem from="1610027739527" duration="3476000" />
     </task>
     <servers />
   </component>
