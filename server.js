@@ -3,8 +3,8 @@ var express = require('express'),
   app = express(),
   template = require('jade').compileFile(__dirname + '/source/templates/homepage.jade'),
     starwars = require('jade').compileFile(__dirname + '/source/templates/starwars.jade'),
-    lily = require('jade').compileFile(__dirname + '/source/templates/lily.jade')
-
+    lily = require('jade').compileFile(__dirname + '/source/templates/lily.jade'),
+    pod = require('jade').compileFile(__dirname + '/source/templates/pod.jade')
 
 app.use(logger('dev'));
 app.use(express.static(__dirname + '/static'));
@@ -58,6 +58,18 @@ app.get('/thisiswherethefunbegins', function(req, res, next) {
     next(e)
   }
 })
+
+app.get('/pod', function(req, res, next) {
+  try {
+    var html = pod({
+      title: 'Oopsie'
+    })
+    res.send(html)
+  } catch (e) {
+    next(e)
+  }
+})
+
 app.listen(process.env.PORT || 3000, function() {
   console.log('Listening on http://localhost:' + (process.env.PORT || 3000))
 })
