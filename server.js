@@ -37,17 +37,6 @@ app.get('/hellothere', function(req, res) {
   res.send("General Kenobi");
 })
 
-app.get('/lily', function(req, res, next) {
-  try {
-    var html = lily({
-      title: 'Home'
-    })
-    res.send(html)
-  } catch (e) {
-    next(e)
-  }
-})
-
 app.get('/thisiswherethefunbegins', function(req, res, next) {
   try {
     var html = starwars({
