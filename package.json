@@ -23,7 +23,7 @@
     "jade": "^1.11.0",
     "morgan": "^1.9.0",
     "nodemon": "^1.17.4",
-    "pdfreader": "^0.2.5",
+    "pdfreader": "^3.0.0",
     "stylus": "^0.54.5",
     "youtube-player": "^5.5.1"
   },
