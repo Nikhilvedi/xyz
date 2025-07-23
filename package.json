@@ -22,7 +22,7 @@
     "express": "^4.16.3",
     "jade": "^1.11.0",
     "morgan": "^1.9.0",
-    "nodemon": "^1.17.4",
+    "nodemon": "^3.1.10",
     "pdfreader": "^0.2.5",
     "stylus": "^0.54.5",
     "youtube-player": "^5.5.1"
