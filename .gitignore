@@ -1,2 +1,21 @@
 node_modules/*
 .DS_Store
+
+# Xcode
+*.xcodeproj
+*.xcworkspace
+xcuserdata/
+*.xcuserstate
+DerivedData/
+.build/
+build/
+
+# Swift Package Manager
+.swiftpm/
+Packages/
+Package.resolved
+
+# iOS
+*.ipa
+*.dSYM.zip
+*.dSYM
