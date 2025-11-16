@@ -48,6 +48,9 @@ struct ContentView: View {
                 goalsProgressWidget
             }
             
+            // HealthKit Sync Button
+            healthKitSyncButton
+            
             Text("Paste your workout notes below")
                 .font(.headline)
                 .foregroundColor(.secondary)
@@ -154,6 +157,72 @@ struct MiniGoalCard: View {
             RoundedRectangle(cornerRadius: 8)
                 .stroke(goal.isCompleted ? Color.green : Color(.systemGray4), lineWidth: 2)
         )
+    }
+    
+    // MARK: - HealthKit Sync Button
+    
+    @StateObject private var healthKitManager = HealthKitManager.shared
+    @State private var isSyncing = false
+    @State private var showingSyncAlert = false
+    @State private var syncAlertMessage = ""
+    
+    private var healthKitSyncButton: some View {
+        Group {
+            if healthKitManager.healthKitEnabled {
+                Button(action: syncHealthKitWorkouts) {
+                    HStack {
+                        Image(systemName: "heart.circle.fill")
+                        if isSyncing {
+                            ProgressView()
+                                .padding(.leading, 4)
+                            Text("Syncing...")
+                        } else {
+                            Text("Sync from Apple Health")
+                        }
+                    }
+                    .font(.subheadline)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(Color.pink)
+                    .cornerRadius(10)
+                }
+                .disabled(isSyncing)
+                .padding(.horizontal)
+                .alert("HealthKit Sync", isPresented: $showingSyncAlert) {
+                    Button("OK", role: .cancel) {}
+                } message: {
+                    Text(syncAlertMessage)
+                }
+            }
+        }
+    }
+    
+    private func syncHealthKitWorkouts() {
+        isSyncing = true
+        healthKitManager.syncWorkouts { text, error in
+            isSyncing = false
+            
+            if let error = error {
+                syncAlertMessage = "Sync failed: \(error.localizedDescription)"
+                showingSyncAlert = true
+                return
+            }
+            
+            if let text = text, !text.isEmpty {
+                // Append to existing text or replace
+                if viewModel.inputText.isEmpty {
+                    viewModel.inputText = text
+                } else {
+                    viewModel.inputText += "\n\n" + text
+                }
+                syncAlertMessage = "Successfully synced workouts from the last 7 days!"
+                showingSyncAlert = true
+            } else {
+                syncAlertMessage = "No workouts found in the last 7 days."
+                showingSyncAlert = true
+            }
+        }
     }
     
     // MARK: - Summary View

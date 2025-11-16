@@ -1,11 +1,17 @@
 # Workout Summary App
 
-A simple iOS SwiftUI app that parses workout notes and generates a weekly summary of exercises with muscle group analysis, visual heatmap, goal tracking, and smart notifications.
+A comprehensive iOS SwiftUI app that parses workout notes and generates weekly summaries with muscle group analysis, visual heatmap, goal tracking, smart notifications, and HealthKit integration.
 
 ## Features
 
 - ✅ Text input field for pasting workout notes
 - ✅ Share Extension support for receiving text from other apps
+- ✅ **NEW: HealthKit Integration**
+  - Automatically sync workouts from Apple Health
+  - Support for running, cycling, swimming, strength training, HIIT, yoga, and more
+  - One-tap sync button
+  - Optional auto-sync on app launch
+  - Converts HealthKit workouts to text format
 - ✅ Intelligent parsing of workout data:
   - Day identification (Day 1, weekdays, dates)
   - Strength sets (e.g., "3x10 pull ups")
@@ -22,15 +28,15 @@ A simple iOS SwiftUI app that parses workout notes and generates a weekly summar
   - Visual progress indicators and completion status
   - Goals persist across app sessions
   - See goals progress on the input screen
-- ✅ **NEW: Smart Notifications**
+- ✅ **Smart Notifications**
   - Weekly summary notifications (customizable day and time)
   - Goal completion alerts
   - Persistent settings
   - Full notification management in Settings tab
 - ✅ Three-tab interface:
-  - Workouts: Input and view workout summaries
+  - Workouts: Input and view workout summaries with HealthKit sync
   - Goals: Manage weekly targets and track progress
-  - Settings: Configure notifications and preferences
+  - Settings: Configure HealthKit, notifications, and preferences
 - ✅ Clean SwiftUI interface
 - ✅ MVVM architecture
 - ✅ Comprehensive unit tests
@@ -41,7 +47,7 @@ A simple iOS SwiftUI app that parses workout notes and generates a weekly summar
 WorkoutSummaryApp/
 ├── WorkoutSummaryApp/          # Main app
 │   ├── WorkoutSummaryApp.swift # App entry point
-│   ├── ContentView.swift       # Main UI
+│   ├── ContentView.swift       # Main UI with HealthKit sync
 │   ├── Models.swift            # Data models
 │   ├── WorkoutParser.swift     # Parsing logic
 │   ├── WorkoutViewModel.swift  # ViewModel
@@ -50,10 +56,11 @@ WorkoutSummaryApp/
 │   ├── WeeklySummaryView.swift # Enhanced summary view
 │   ├── WorkoutGoal.swift       # Goal models and matching
 │   ├── GoalsView.swift         # Goal management UI
-│   ├── NotificationManager.swift # NEW: Notification handling
-│   ├── SettingsView.swift      # NEW: Settings UI
-│   ├── Info.plist             # App configuration
-│   └── WorkoutSummaryApp.entitlements
+│   ├── NotificationManager.swift # Notification handling
+│   ├── HealthKitManager.swift  # NEW: HealthKit integration
+│   ├── SettingsView.swift      # Settings UI with HealthKit config
+│   ├── Info.plist             # App configuration with HealthKit permissions
+│   └── WorkoutSummaryApp.entitlements # Includes HealthKit capability
 ├── ShareExtension/             # Share Extension
 │   ├── ShareViewController.swift
 │   ├── Info.plist
@@ -130,13 +137,55 @@ Since Xcode project files (.xcodeproj) cannot be easily created manually, follow
 
 1. Launch the app (starts on Workouts tab)
 2. See your weekly goals progress at the top (if any goals are set)
-3. Paste your workout notes in the text editor
+3. Paste your workout notes in the text editor OR sync from Apple Health
 4. Tap "Parse Summary"
 5. View your organized workout summary with three tabs:
    - **Daily**: See exercises grouped by day
    - **Muscle Map**: Visual body heatmap showing muscles worked
    - **Stats**: Detailed statistics and breakdowns
 6. Tap "New Input" to start over
+
+### HealthKit Integration - Automatic Workout Sync
+
+The app integrates with Apple Health to automatically import your workouts:
+
+1. **Enable HealthKit**:
+   - Go to Settings tab
+   - Toggle "Enable HealthKit Sync"
+   - Grant permission when prompted
+   - The app will read workout data from Apple Health
+
+2. **Sync Workouts**:
+   - On the Workouts tab, tap "Sync from Apple Health" button
+   - App fetches workouts from the last 7 days
+   - Workouts are automatically converted to text format
+   - Data is added to the input field for parsing
+
+3. **Auto-Sync on Launch**:
+   - In Settings, enable "Auto-sync on app launch"
+   - Workouts automatically load when you open the app
+   - Only fills empty input field (won't overwrite existing text)
+
+4. **Supported Activities**:
+   - 🏃 Running, Walking, Hiking (with distance)
+   - 🚴 Cycling (with distance)
+   - 🏊 Swimming (with distance)
+   - 💪 Strength Training (duration-based)
+   - 🔥 HIIT, Cross Training
+   - 🧘 Yoga, Pilates
+   - 🚣 Rowing (with distance)
+   - ⬆️ Elliptical, Stairs, and more
+
+5. **Example Sync Output**:
+   ```
+   15/11/25
+   5.2k run
+   30 min strength training
+   
+   14/11/25
+   10.1k cycle
+   45 min yoga
+   ```
 
 ### Goals Tab - Track Your Weekly Targets
 
@@ -166,23 +215,29 @@ The Goals tab lets you set and track weekly exercise targets:
    - "cycle" - Cardio (Time) - 30 min - 3x per week
    - "push ups" - Bodyweight - 50 reps - 4x per week
 
-### Settings Tab - Configure Notifications
+### Settings Tab - Configure HealthKit, Notifications & Preferences
 
-The Settings tab provides notification management:
+The Settings tab provides comprehensive app configuration:
 
-1. **Weekly Summary Notifications**:
+1. **HealthKit Integration**:
+   - Toggle "Enable HealthKit Sync" to connect with Apple Health
+   - Enable "Auto-sync on app launch" for automatic imports
+   - View supported activities list
+   - Manage HealthKit permissions
+
+2. **Weekly Summary Notifications**:
    - Toggle to enable/disable notifications
    - Select day of week (e.g., Sunday)
    - Choose time (e.g., 8:00 PM)
    - Receive weekly workout summaries automatically
 
-2. **Automatic Notifications**:
+3. **Automatic Notifications**:
    - **Weekly Summary**: Get a notification at your chosen time with workout and goal insights
    - **Goal Completion**: Instant notification when you complete a weekly goal
    - **Customizable Schedule**: Choose the best time for your weekly review
 
-3. **Permission Management**:
-   - First-time users will be prompted for notification permission
+4. **Permission Management**:
+   - First-time users will be prompted for HealthKit and notification permissions
    - Settings can be adjusted in iOS Settings if needed
 
 ### Muscle Heatmap Feature

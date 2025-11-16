@@ -11,17 +11,25 @@ import SwiftUI
 struct WorkoutSummaryApp: App {
     @StateObject private var viewModel = WorkoutViewModel()
     @StateObject private var notificationManager = NotificationManager.shared
+    @StateObject private var healthKitManager = HealthKitManager.shared
     
     var body: some Scene {
         WindowGroup {
             MainTabView()
                 .environmentObject(viewModel)
                 .environmentObject(notificationManager)
+                .environmentObject(healthKitManager)
                 .onOpenURL { url in
                     handleIncomingURL(url)
                 }
                 .onAppear {
                     notificationManager.checkAuthorizationStatus()
+                    healthKitManager.checkAuthorizationStatus()
+                    
+                    // Auto-sync if enabled
+                    if healthKitManager.autoSyncEnabled && healthKitManager.isAuthorized {
+                        autoSyncHealthKitWorkouts()
+                    }
                 }
         }
     }
@@ -37,6 +45,18 @@ struct WorkoutSummaryApp: App {
                 viewModel.loadSharedText(sharedText)
                 // Clear the shared text after loading
                 sharedDefaults.removeObject(forKey: "sharedText")
+            }
+        }
+    }
+    
+    // Auto-sync HealthKit workouts on app launch
+    private func autoSyncHealthKitWorkouts() {
+        healthKitManager.syncWorkouts { text, error in
+            guard let text = text, !text.isEmpty, error == nil else { return }
+            
+            // Only auto-fill if input is empty
+            if viewModel.inputText.isEmpty {
+                viewModel.inputText = text
             }
         }
     }

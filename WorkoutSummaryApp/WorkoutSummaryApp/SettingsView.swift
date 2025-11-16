@@ -2,18 +2,55 @@
 //  SettingsView.swift
 //  WorkoutSummaryApp
 //
-//  Settings screen for notifications and preferences
+//  Settings screen for notifications, HealthKit, and preferences
 //
 
 import SwiftUI
 
 struct SettingsView: View {
     @StateObject private var notificationManager = NotificationManager.shared
+    @StateObject private var healthKitManager = HealthKitManager.shared
     @State private var showingPermissionAlert = false
+    @State private var showingHealthKitAlert = false
+    @State private var healthKitAlertMessage = ""
     
     var body: some View {
         NavigationView {
             List {
+                // HealthKit Integration Section
+                Section(header: Text("HealthKit Integration")) {
+                    Toggle("Enable HealthKit Sync", isOn: $healthKitManager.healthKitEnabled)
+                        .onChange(of: healthKitManager.healthKitEnabled) { newValue in
+                            if newValue && !healthKitManager.isAuthorized {
+                                requestHealthKitPermission()
+                            }
+                        }
+                    
+                    if healthKitManager.healthKitEnabled {
+                        Toggle("Auto-sync on app launch", isOn: $healthKitManager.autoSyncEnabled)
+                        
+                        Text("Automatically import workouts from Apple Health including running, cycling, swimming, strength training, and more.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .padding(.top, 4)
+                    }
+                }
+                
+                // HealthKit Info
+                if healthKitManager.healthKitEnabled {
+                    Section(header: Text("Supported Activities")) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            InfoRow(icon: "figure.run", text: "Running, Walking, Hiking")
+                            InfoRow(icon: "bicycle", text: "Cycling")
+                            InfoRow(icon: "figure.pool.swim", text: "Swimming")
+                            InfoRow(icon: "dumbbell.fill", text: "Strength Training")
+                            InfoRow(icon: "flame.fill", text: "HIIT, Cross Training")
+                            InfoRow(icon: "figure.mind.and.body", text: "Yoga, Pilates")
+                        }
+                        .padding(.vertical, 4)
+                    }
+                }
+                
                 // Notifications Section
                 Section(header: Text("Weekly Summary Notifications")) {
                     Toggle("Enable Notifications", isOn: $notificationManager.notificationsEnabled)
@@ -58,14 +95,14 @@ struct SettingsView: View {
                     HStack {
                         Text("Version")
                         Spacer()
-                        Text("1.0")
+                        Text("1.1")
                             .foregroundColor(.secondary)
                     }
                     
                     HStack {
                         Text("Build")
                         Spacer()
-                        Text("1")
+                        Text("2")
                             .foregroundColor(.secondary)
                     }
                 }
@@ -75,6 +112,11 @@ struct SettingsView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text("Please enable notifications in Settings to receive weekly summaries.")
+            }
+            .alert("HealthKit", isPresented: $showingHealthKitAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(healthKitAlertMessage)
             }
         }
     }
@@ -86,6 +128,16 @@ struct SettingsView: View {
             if !granted {
                 notificationManager.notificationsEnabled = false
                 showingPermissionAlert = true
+            }
+        }
+    }
+    
+    private func requestHealthKitPermission() {
+        healthKitManager.requestAuthorization { success, error in
+            if !success {
+                healthKitManager.healthKitEnabled = false
+                healthKitAlertMessage = error?.localizedDescription ?? "Please enable HealthKit access in Settings."
+                showingHealthKitAlert = true
             }
         }
     }

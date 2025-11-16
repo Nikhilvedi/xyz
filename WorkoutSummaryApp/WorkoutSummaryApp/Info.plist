@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>
@@ -34,6 +34,7 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
+		<string>healthkit</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
@@ -61,5 +62,9 @@
 	</array>
 	<key>UIAppFonts</key>
 	<array/>
+	<key>NSHealthShareUsageDescription</key>
+	<string>This app needs access to read your workout data from Apple Health to automatically import your exercises, running, cycling, swimming, and other activities.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>This app does not write to HealthKit.</string>
 </dict>
 </plist>
