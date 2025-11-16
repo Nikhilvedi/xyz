@@ -1,6 +1,6 @@
 # Workout Summary App
 
-A simple iOS SwiftUI app that parses workout notes and generates a weekly summary of exercises.
+A simple iOS SwiftUI app that parses workout notes and generates a weekly summary of exercises with muscle group analysis and visual heatmap.
 
 ## Features
 
@@ -11,7 +11,15 @@ A simple iOS SwiftUI app that parses workout notes and generates a weekly summar
   - Strength sets (e.g., "3x10 pull ups")
   - Cardio exercises (e.g., "5k run", "30 min cycle")
   - Bodyweight reps (e.g., "50 push ups", "max pull ups")
-- ✅ Weekly summary view grouped by day
+- ✅ **NEW: Weekly summary with muscle group analysis**
+  - Visual body heatmap showing which muscles were targeted
+  - Color-coded intensity levels (not targeted, light, moderate, heavy)
+  - Detailed muscle group breakdown
+  - Exercise statistics by day
+- ✅ Three-tab interface:
+  - Daily view: See workouts grouped by day
+  - Muscle Map: Visual representation of muscles worked
+  - Stats: Detailed statistics and breakdown
 - ✅ Clean SwiftUI interface
 - ✅ MVVM architecture
 - ✅ Comprehensive unit tests
@@ -26,6 +34,9 @@ WorkoutSummaryApp/
 │   ├── Models.swift            # Data models
 │   ├── WorkoutParser.swift     # Parsing logic
 │   ├── WorkoutViewModel.swift  # ViewModel
+│   ├── MuscleGroup.swift       # NEW: Muscle mapping logic
+│   ├── BodyHeatmapView.swift   # NEW: Visual body heatmap
+│   ├── WeeklySummaryView.swift # NEW: Enhanced summary view
 │   ├── Info.plist             # App configuration
 │   └── WorkoutSummaryApp.entitlements
 ├── ShareExtension/             # Share Extension
@@ -33,7 +44,8 @@ WorkoutSummaryApp/
 │   ├── Info.plist
 │   └── ShareExtension.entitlements
 └── WorkoutSummaryAppTests/     # Unit tests
-    └── WorkoutParserTests.swift
+    ├── WorkoutParserTests.swift
+    └── MuscleMapperTests.swift # NEW: Muscle mapping tests
 ```
 
 ## Requirements
@@ -102,8 +114,29 @@ Since Xcode project files (.xcodeproj) cannot be easily created manually, follow
 1. Launch the app
 2. Paste your workout notes in the text editor
 3. Tap "Parse Summary"
-4. View your organized workout summary
+4. View your organized workout summary with three tabs:
+   - **Daily**: See exercises grouped by day
+   - **Muscle Map**: Visual body heatmap showing muscles worked
+   - **Stats**: Detailed statistics and breakdowns
 5. Tap "New Input" to start over
+
+### Muscle Heatmap Feature
+
+The muscle map view provides:
+- **Visual body representation** with color-coded muscle groups
+- **Heatmap colors**:
+  - Gray: Not targeted
+  - Yellow: Light intensity
+  - Orange: Moderate intensity
+  - Red: Heavy intensity
+- **Detailed breakdown** showing which muscle groups were worked
+- **Smart exercise mapping** - automatically identifies muscles from exercise names
+
+Supported muscle groups:
+- Chest, Shoulders, Biceps, Triceps, Forearms
+- Abs, Obliques, Upper Back, Lower Back, Lats
+- Quads, Hamstrings, Glutes, Calves
+- Cardio tracking
 
 ### Share Extension
 

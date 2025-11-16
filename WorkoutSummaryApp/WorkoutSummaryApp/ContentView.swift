@@ -7,6 +7,19 @@
 
 import SwiftUI
 
+// MARK: - Environment Key for Clear Action
+
+private struct ClearWorkoutKey: EnvironmentKey {
+    static let defaultValue: () -> Void = {}
+}
+
+extension EnvironmentValues {
+    var clearWorkout: () -> Void {
+        get { self[ClearWorkoutKey.self] }
+        set { self[ClearWorkoutKey.self] = newValue }
+    }
+}
+
 struct ContentView: View {
     @StateObject private var viewModel = WorkoutViewModel()
     
@@ -68,29 +81,8 @@ struct ContentView: View {
     // MARK: - Summary View
     
     private var summaryView: some View {
-        VStack(spacing: 0) {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    ForEach(viewModel.workoutDays) { day in
-                        WorkoutDayView(workoutDay: day)
-                    }
-                }
-                .padding()
-            }
-            
-            Button(action: {
-                viewModel.clearAll()
-            }) {
-                Text("New Input")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
-            }
-            .padding()
-        }
+        WeeklySummaryView(workoutDays: viewModel.workoutDays)
+            .environment(\.clearWorkout, viewModel.clearAll)
     }
 }
 
