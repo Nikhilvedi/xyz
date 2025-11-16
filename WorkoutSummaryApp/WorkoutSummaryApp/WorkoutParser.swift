@@ -2,7 +2,8 @@
 //  WorkoutParser.swift
 //  WorkoutSummaryApp
 //
-//  Parser to extract workout data from text
+//  Enhanced parser to extract workout data from text
+//  Supports: strength sets, cardio, bodyweight, weights, rest times, RPE, supersets, and more
 //
 
 import Foundation
@@ -33,9 +34,9 @@ class WorkoutParser {
                 }
                 // Start new day
                 currentDay = WorkoutDay(dateLabel: dayLabel, exercises: [])
-            } else if let exercise = parseExercise(trimmedLine) {
-                // Add exercise to current day
-                currentDay?.exercises.append(exercise)
+            } else if let exercises = parseExerciseLine(trimmedLine) {
+                // Add exercise(s) to current day (supports supersets)
+                currentDay?.exercises.append(contentsOf: exercises)
             }
             // Ignore lines that don't match patterns (commentary, etc.)
         }
@@ -48,7 +49,31 @@ class WorkoutParser {
         return workoutDays
     }
     
-    // MARK: - Day header parsing
+    // MARK: - Exercise line parsing (handles supersets)
+    
+    private func parseExerciseLine(_ line: String) -> [Exercise]? {
+        // Check for superset pattern: "3x10 pull ups + 3x10 dips"
+        if line.contains("+") {
+            let parts = line.components(separatedBy: "+")
+            var exercises: [Exercise] = []
+            
+            for part in parts {
+                let trimmed = part.trimmingCharacters(in: .whitespaces)
+                if let exercise = parseExercise(trimmed) {
+                    exercises.append(exercise)
+                }
+            }
+            
+            return exercises.isEmpty ? nil : exercises
+        }
+        
+        // Single exercise
+        if let exercise = parseExercise(line) {
+            return [exercise]
+        }
+        
+        return nil
+    }
     
     private func parseDayHeader(_ line: String) -> String? {
         let lowercased = line.lowercased()
@@ -89,104 +114,24 @@ class WorkoutParser {
     // MARK: - Exercise parsing
     
     private func parseExercise(_ line: String) -> Exercise? {
-        // Try strength sets pattern first: "3x10 pull ups" or "4 x 8 bench press"
-        if let exercise = parseStrengthSets(line) {
+        // Try natural language patterns first: "ran 5k", "did 3 sets of 10 pull ups"
+        if let exercise = parseNaturalLanguage(line) {
             return exercise
         }
         
-        // Try cardio pattern: "5k run", "30 min cycle"
-        if let exercise = parseCardio(line) {
+        // Try enhanced strength sets pattern: "3x10 pull ups @ 135lbs (90s rest) RPE 8"
+        if let exercise = parseStrengthSetsEnhanced(line) {
+            return exercise
+        }
+        
+        // Try enhanced cardio pattern: "5k run @ 5:30/km", "30 min cycle @ RPE 7", "3 mi run"
+        if let exercise = parseCardioEnhanced(line) {
             return exercise
         }
         
         // Try bodyweight reps: "50 push ups", "max pull ups"
         if let exercise = parseBodyweightReps(line) {
             return exercise
-        }
-        
-        return nil
-    }
-    
-    // MARK: - Strength sets parsing
-    
-    private func parseStrengthSets(_ line: String) -> Exercise? {
-        // Pattern: 3x10 or 3 x 10
-        let pattern = #"^(\d+)\s*x\s*(\d+)\s+(.+)$"#
-        
-        guard let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive),
-              let match = regex.firstMatch(in: line, range: NSRange(line.startIndex..., in: line)) else {
-            return nil
-        }
-        
-        guard let setsRange = Range(match.range(at: 1), in: line),
-              let repsRange = Range(match.range(at: 2), in: line),
-              let movementRange = Range(match.range(at: 3), in: line) else {
-            return nil
-        }
-        
-        let sets = Int(line[setsRange])
-        let reps = Int(line[repsRange])
-        let movement = String(line[movementRange]).trimmingCharacters(in: .whitespaces)
-        
-        return Exercise(
-            rawText: line,
-            sets: sets,
-            reps: reps,
-            quantity: nil,
-            unit: nil,
-            movement: movement
-        )
-    }
-    
-    // MARK: - Cardio parsing
-    
-    private func parseCardio(_ line: String) -> Exercise? {
-        // Pattern 1: Distance (e.g., "5k run", "3 km row")
-        let distancePattern = #"^(\d+(?:\.\d+)?)\s*(k|km)\s+(.+)$"#
-        if let regex = try? NSRegularExpression(pattern: distancePattern, options: .caseInsensitive),
-           let match = regex.firstMatch(in: line, range: NSRange(line.startIndex..., in: line)) {
-            
-            guard let quantityRange = Range(match.range(at: 1), in: line),
-                  let unitRange = Range(match.range(at: 2), in: line),
-                  let movementRange = Range(match.range(at: 3), in: line) else {
-                return nil
-            }
-            
-            let quantity = Double(line[quantityRange])
-            let unit = String(line[unitRange]).lowercased()
-            let movement = String(line[movementRange]).trimmingCharacters(in: .whitespaces)
-            
-            return Exercise(
-                rawText: line,
-                sets: nil,
-                reps: nil,
-                quantity: quantity,
-                unit: unit,
-                movement: movement
-            )
-        }
-        
-        // Pattern 2: Time (e.g., "30 min cycle")
-        let timePattern = #"^(\d+(?:\.\d+)?)\s*min\s+(.+)$"#
-        if let regex = try? NSRegularExpression(pattern: timePattern, options: .caseInsensitive),
-           let match = regex.firstMatch(in: line, range: NSRange(line.startIndex..., in: line)) {
-            
-            guard let quantityRange = Range(match.range(at: 1), in: line),
-                  let movementRange = Range(match.range(at: 2), in: line) else {
-                return nil
-            }
-            
-            let quantity = Double(line[quantityRange])
-            let movement = String(line[movementRange]).trimmingCharacters(in: .whitespaces)
-            
-            return Exercise(
-                rawText: line,
-                sets: nil,
-                reps: nil,
-                quantity: quantity,
-                unit: "min",
-                movement: movement
-            )
         }
         
         return nil
@@ -214,10 +159,7 @@ class WorkoutParser {
         
         return Exercise(
             rawText: line,
-            sets: nil,
             reps: reps,
-            quantity: nil,
-            unit: nil,
             movement: movement
         )
     }
