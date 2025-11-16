@@ -10,13 +10,18 @@ import SwiftUI
 @main
 struct WorkoutSummaryApp: App {
     @StateObject private var viewModel = WorkoutViewModel()
+    @StateObject private var notificationManager = NotificationManager.shared
     
     var body: some Scene {
         WindowGroup {
             MainTabView()
                 .environmentObject(viewModel)
+                .environmentObject(notificationManager)
                 .onOpenURL { url in
                     handleIncomingURL(url)
+                }
+                .onAppear {
+                    notificationManager.checkAuthorizationStatus()
                 }
         }
     }
@@ -52,6 +57,11 @@ struct MainTabView: View {
             GoalsView(goals: $viewModel.weeklyGoals, workoutDays: viewModel.workoutDays)
                 .tabItem {
                     Label("Goals", systemImage: "target")
+                }
+            
+            SettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
                 }
         }
     }

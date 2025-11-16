@@ -1,6 +1,6 @@
 # Workout Summary App
 
-A simple iOS SwiftUI app that parses workout notes and generates a weekly summary of exercises with muscle group analysis, visual heatmap, and goal tracking.
+A simple iOS SwiftUI app that parses workout notes and generates a weekly summary of exercises with muscle group analysis, visual heatmap, goal tracking, and smart notifications.
 
 ## Features
 
@@ -16,15 +16,21 @@ A simple iOS SwiftUI app that parses workout notes and generates a weekly summar
   - Color-coded intensity levels (not targeted, light, moderate, heavy)
   - Detailed muscle group breakdown
   - Exercise statistics by day
-- ✅ **NEW: Weekly Goal Tracking**
+- ✅ **Weekly Goal Tracking**
   - Set weekly exercise goals (strength, cardio distance, cardio time, bodyweight)
   - Track completion automatically as you log workouts
   - Visual progress indicators and completion status
   - Goals persist across app sessions
   - See goals progress on the input screen
-- ✅ Two-tab interface:
+- ✅ **NEW: Smart Notifications**
+  - Weekly summary notifications (customizable day and time)
+  - Goal completion alerts
+  - Persistent settings
+  - Full notification management in Settings tab
+- ✅ Three-tab interface:
   - Workouts: Input and view workout summaries
   - Goals: Manage weekly targets and track progress
+  - Settings: Configure notifications and preferences
 - ✅ Clean SwiftUI interface
 - ✅ MVVM architecture
 - ✅ Comprehensive unit tests
@@ -42,8 +48,10 @@ WorkoutSummaryApp/
 │   ├── MuscleGroup.swift       # Muscle mapping logic
 │   ├── BodyHeatmapView.swift   # Visual body heatmap
 │   ├── WeeklySummaryView.swift # Enhanced summary view
-│   ├── WorkoutGoal.swift       # NEW: Goal models and matching
-│   ├── GoalsView.swift         # NEW: Goal management UI
+│   ├── WorkoutGoal.swift       # Goal models and matching
+│   ├── GoalsView.swift         # Goal management UI
+│   ├── NotificationManager.swift # NEW: Notification handling
+│   ├── SettingsView.swift      # NEW: Settings UI
 │   ├── Info.plist             # App configuration
 │   └── WorkoutSummaryApp.entitlements
 ├── ShareExtension/             # Share Extension
@@ -53,7 +61,8 @@ WorkoutSummaryApp/
 └── WorkoutSummaryAppTests/     # Unit tests
     ├── WorkoutParserTests.swift
     ├── MuscleMapperTests.swift
-    └── WorkoutGoalTests.swift  # NEW: Goal tracking tests
+    ├── WorkoutGoalTests.swift
+    └── NotificationManagerTests.swift # NEW: Notification tests
 ```
 
 ## Requirements
@@ -156,6 +165,25 @@ The Goals tab lets you set and track weekly exercise targets:
    - "run" - Cardio (Distance) - 5km - 2x per week
    - "cycle" - Cardio (Time) - 30 min - 3x per week
    - "push ups" - Bodyweight - 50 reps - 4x per week
+
+### Settings Tab - Configure Notifications
+
+The Settings tab provides notification management:
+
+1. **Weekly Summary Notifications**:
+   - Toggle to enable/disable notifications
+   - Select day of week (e.g., Sunday)
+   - Choose time (e.g., 8:00 PM)
+   - Receive weekly workout summaries automatically
+
+2. **Automatic Notifications**:
+   - **Weekly Summary**: Get a notification at your chosen time with workout and goal insights
+   - **Goal Completion**: Instant notification when you complete a weekly goal
+   - **Customizable Schedule**: Choose the best time for your weekly review
+
+3. **Permission Management**:
+   - First-time users will be prompted for notification permission
+   - Settings can be adjusted in iOS Settings if needed
 
 ### Muscle Heatmap Feature
 

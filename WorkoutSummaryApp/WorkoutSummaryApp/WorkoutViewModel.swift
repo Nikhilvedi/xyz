@@ -27,9 +27,14 @@ class WorkoutViewModel: ObservableObject {
     }
     
     func parseWorkout() {
+        let previousGoals = weeklyGoals
+        
         workoutDays = parser.parse(inputText)
         isParsed = !workoutDays.isEmpty
         updateGoalCompletion()
+        
+        // Check for newly completed goals and send notifications
+        checkForCompletedGoals(previous: previousGoals, current: weeklyGoals)
     }
     
     func clearAll() {
@@ -65,6 +70,22 @@ class WorkoutViewModel: ObservableObject {
         for i in 0..<weeklyGoals.count {
             weeklyGoals[i].completedCount = 0
             weeklyGoals[i].isCompleted = false
+        }
+    }
+    
+    // MARK: - Notification Handling
+    
+    private func checkForCompletedGoals(previous: [WorkoutGoal], current: [WorkoutGoal]) {
+        for (index, currentGoal) in current.enumerated() {
+            // Find matching previous goal
+            if index < previous.count {
+                let previousGoal = previous[index]
+                
+                // Check if goal was just completed
+                if !previousGoal.isCompleted && currentGoal.isCompleted {
+                    NotificationManager.shared.scheduleGoalCompletionNotification(goalName: currentGoal.name)
+                }
+            }
         }
     }
 }
