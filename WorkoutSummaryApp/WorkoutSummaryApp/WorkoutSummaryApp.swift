@@ -13,7 +13,7 @@ struct WorkoutSummaryApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
                 .environmentObject(viewModel)
                 .onOpenURL { url in
                     handleIncomingURL(url)
@@ -33,6 +33,26 @@ struct WorkoutSummaryApp: App {
                 // Clear the shared text after loading
                 sharedDefaults.removeObject(forKey: "sharedText")
             }
+        }
+    }
+}
+
+// MARK: - Main Tab View
+
+struct MainTabView: View {
+    @EnvironmentObject var viewModel: WorkoutViewModel
+    
+    var body: some View {
+        TabView {
+            ContentView()
+                .tabItem {
+                    Label("Workouts", systemImage: "list.bullet")
+                }
+            
+            GoalsView(goals: $viewModel.weeklyGoals, workoutDays: viewModel.workoutDays)
+                .tabItem {
+                    Label("Goals", systemImage: "target")
+                }
         }
     }
 }

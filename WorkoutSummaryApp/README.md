@@ -1,6 +1,6 @@
 # Workout Summary App
 
-A simple iOS SwiftUI app that parses workout notes and generates a weekly summary of exercises with muscle group analysis and visual heatmap.
+A simple iOS SwiftUI app that parses workout notes and generates a weekly summary of exercises with muscle group analysis, visual heatmap, and goal tracking.
 
 ## Features
 
@@ -11,15 +11,20 @@ A simple iOS SwiftUI app that parses workout notes and generates a weekly summar
   - Strength sets (e.g., "3x10 pull ups")
   - Cardio exercises (e.g., "5k run", "30 min cycle")
   - Bodyweight reps (e.g., "50 push ups", "max pull ups")
-- ✅ **NEW: Weekly summary with muscle group analysis**
+- ✅ **Weekly summary with muscle group analysis**
   - Visual body heatmap showing which muscles were targeted
   - Color-coded intensity levels (not targeted, light, moderate, heavy)
   - Detailed muscle group breakdown
   - Exercise statistics by day
-- ✅ Three-tab interface:
-  - Daily view: See workouts grouped by day
-  - Muscle Map: Visual representation of muscles worked
-  - Stats: Detailed statistics and breakdown
+- ✅ **NEW: Weekly Goal Tracking**
+  - Set weekly exercise goals (strength, cardio distance, cardio time, bodyweight)
+  - Track completion automatically as you log workouts
+  - Visual progress indicators and completion status
+  - Goals persist across app sessions
+  - See goals progress on the input screen
+- ✅ Two-tab interface:
+  - Workouts: Input and view workout summaries
+  - Goals: Manage weekly targets and track progress
 - ✅ Clean SwiftUI interface
 - ✅ MVVM architecture
 - ✅ Comprehensive unit tests
@@ -34,9 +39,11 @@ WorkoutSummaryApp/
 │   ├── Models.swift            # Data models
 │   ├── WorkoutParser.swift     # Parsing logic
 │   ├── WorkoutViewModel.swift  # ViewModel
-│   ├── MuscleGroup.swift       # NEW: Muscle mapping logic
-│   ├── BodyHeatmapView.swift   # NEW: Visual body heatmap
-│   ├── WeeklySummaryView.swift # NEW: Enhanced summary view
+│   ├── MuscleGroup.swift       # Muscle mapping logic
+│   ├── BodyHeatmapView.swift   # Visual body heatmap
+│   ├── WeeklySummaryView.swift # Enhanced summary view
+│   ├── WorkoutGoal.swift       # NEW: Goal models and matching
+│   ├── GoalsView.swift         # NEW: Goal management UI
 │   ├── Info.plist             # App configuration
 │   └── WorkoutSummaryApp.entitlements
 ├── ShareExtension/             # Share Extension
@@ -45,7 +52,8 @@ WorkoutSummaryApp/
 │   └── ShareExtension.entitlements
 └── WorkoutSummaryAppTests/     # Unit tests
     ├── WorkoutParserTests.swift
-    └── MuscleMapperTests.swift # NEW: Muscle mapping tests
+    ├── MuscleMapperTests.swift
+    └── WorkoutGoalTests.swift  # NEW: Goal tracking tests
 ```
 
 ## Requirements
@@ -109,16 +117,45 @@ Since Xcode project files (.xcodeproj) cannot be easily created manually, follow
 
 ## Usage
 
-### Main App
+### Main App - Workouts Tab
 
-1. Launch the app
-2. Paste your workout notes in the text editor
-3. Tap "Parse Summary"
-4. View your organized workout summary with three tabs:
+1. Launch the app (starts on Workouts tab)
+2. See your weekly goals progress at the top (if any goals are set)
+3. Paste your workout notes in the text editor
+4. Tap "Parse Summary"
+5. View your organized workout summary with three tabs:
    - **Daily**: See exercises grouped by day
    - **Muscle Map**: Visual body heatmap showing muscles worked
    - **Stats**: Detailed statistics and breakdowns
-5. Tap "New Input" to start over
+6. Tap "New Input" to start over
+
+### Goals Tab - Track Your Weekly Targets
+
+The Goals tab lets you set and track weekly exercise targets:
+
+1. **Adding a Goal**:
+   - Tap the Goals tab at the bottom
+   - Tap the "+" button to add a goal
+   - Enter exercise name (e.g., "pull ups", "run", "cycle")
+   - Choose goal type:
+     - 💪 **Strength**: Track sets × reps (e.g., 30 total reps = 3x10)
+     - 🏃 **Cardio (Distance)**: Track distance in km (e.g., 5km run)
+     - ⏱️ **Cardio (Time)**: Track time in minutes (e.g., 30 min cycle)
+     - 🤸 **Bodyweight**: Track single-set reps (e.g., 50 push ups)
+   - Set target value and weekly frequency
+   - Tap "Add"
+
+2. **Tracking Progress**:
+   - Goals automatically track when you parse matching workouts
+   - Progress bars show completion status
+   - Green checkmark appears when goal is completed
+   - View progress summary on input screen
+
+3. **Example Goals**:
+   - "pull ups" - Strength - 30 reps - 3x per week
+   - "run" - Cardio (Distance) - 5km - 2x per week
+   - "cycle" - Cardio (Time) - 30 min - 3x per week
+   - "push ups" - Bodyweight - 50 reps - 4x per week
 
 ### Muscle Heatmap Feature
 

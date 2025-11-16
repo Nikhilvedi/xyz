@@ -43,6 +43,11 @@ struct ContentView: View {
     
     private var inputView: some View {
         VStack(spacing: 20) {
+            // Goals progress widget
+            if !viewModel.weeklyGoals.isEmpty {
+                goalsProgressWidget
+            }
+            
             Text("Paste your workout notes below")
                 .font(.headline)
                 .foregroundColor(.secondary)
@@ -76,6 +81,79 @@ struct ContentView: View {
             
             Spacer()
         }
+    }
+    
+    // MARK: - Goals Progress Widget
+    
+    private var goalsProgressWidget: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("📊 Weekly Goals")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                
+                Spacer()
+                
+                let completed = viewModel.weeklyGoals.filter { $0.isCompleted }.count
+                let total = viewModel.weeklyGoals.count
+                
+                Text("\(completed)/\(total)")
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundColor(completed == total ? .green : .blue)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+            }
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
+                    ForEach(viewModel.weeklyGoals.prefix(5)) { goal in
+                        MiniGoalCard(goal: goal)
+                    }
+                }
+            }
+        }
+        .padding()
+        .background(Color(.systemGray6).opacity(0.5))
+        .cornerRadius(12)
+        .padding(.horizontal)
+    }
+}
+
+// MARK: - Mini Goal Card
+
+struct MiniGoalCard: View {
+    let goal: WorkoutGoal
+    
+    var body: some View {
+        VStack(spacing: 6) {
+            Text(goal.type.icon)
+                .font(.title3)
+            
+            Text(goal.name)
+                .font(.caption2)
+                .lineLimit(1)
+                .frame(width: 60)
+            
+            Text("\(goal.completedCount)/\(goal.frequency)")
+                .font(.caption2)
+                .foregroundColor(goal.isCompleted ? .green : .secondary)
+            
+            if goal.isCompleted {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundColor(.green)
+                    .font(.caption)
+            }
+        }
+        .padding(8)
+        .background(Color(.systemBackground))
+        .cornerRadius(8)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(goal.isCompleted ? Color.green : Color(.systemGray4), lineWidth: 2)
+        )
     }
     
     // MARK: - Summary View
