@@ -1,10 +1,10 @@
 var express = require('express'),
   logger = require('morgan'),
   app = express(),
-  template = require('jade').compileFile(__dirname + '/source/templates/homepage.jade'),
-  starwars = require('jade').compileFile(__dirname + '/source/templates/starwars.jade'),
-  pod = require('jade').compileFile(__dirname + '/source/templates/pod.jade'),
-  cv = require('jade').compileFile(__dirname + '/source/templates/cv.jade')
+  template = require('pug').compileFile(__dirname + '/source/templates/default.pug'),
+  starwars = require('pug').compileFile(__dirname + '/source/templates/starwars.pug'),
+  pod = require('pug').compileFile(__dirname + '/source/templates/pod.pug'),
+  cv = require('pug').compileFile(__dirname + '/source/templates/cv.pug')
 
 app.use(logger('dev'));
 app.use(express.static(__dirname + '/static'));
