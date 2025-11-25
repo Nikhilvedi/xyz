@@ -15,7 +15,7 @@ This document explains how to set up Google Cloud Platform (GCP) to deploy this 
 1. Go to [GCP Console](https://console.cloud.google.com/)
 2. Click on the project dropdown at the top
 3. Click **New Project**
-4. Enter a project name (e.g., `xyz-website`)
+4. Enter a project name (e.g., `xyz-site`)
 5. Click **Create**
 6. Note down the **Project ID** (you'll need this later)
 
@@ -42,18 +42,18 @@ gcloud services enable cloudbuild.googleapis.com
 1. Go to **Artifact Registry** in the GCP Console
 2. Click **Create Repository**
 3. Configure:
-   - **Name**: `xyz-website`
+   - **Name**: `xyz-site`
    - **Format**: Docker
    - **Mode**: Standard
    - **Location type**: Region
-   - **Region**: `us-central1` (or your preferred region)
+   - **Region**: `europe-west2` (or your preferred region)
 4. Click **Create**
 
 Or use Cloud Shell:
 ```bash
-gcloud artifacts repositories create xyz-website \
+gcloud artifacts repositories create xyz-site \
     --repository-format=docker \
-    --location=us-central1 \
+    --location=europe-west2 \
     --description="Docker repository for xyz website"
 ```
 
@@ -124,7 +124,7 @@ In your GitHub repository:
 
 | Secret Name | Value |
 |-------------|-------|
-| `GCP_PROJECT_ID` | Your GCP Project ID (e.g., `xyz-website-123456`) |
+| `GCP_PROJECT_ID` | Your GCP Project ID (e.g., `xyz-site-123456`) |
 | `GCP_SA_KEY` | The entire contents of the JSON key file downloaded in Step 6 |
 
 ### Step 8: Deploy!
@@ -147,8 +147,8 @@ To manually trigger:
 After successful deployment, the workflow will output the service URL. You can also find it:
 
 1. Go to **Cloud Run** in GCP Console
-2. Click on `xyz-website` service
-3. The URL is shown at the top (e.g., `https://xyz-website-xxxxx-uc.a.run.app`)
+2. Click on `xyz-site` service
+3. The URL is shown at the top (e.g., `https://xyz-site-xxxxx-uc.a.run.app`)
 
 ### Custom Domain (Optional)
 
@@ -193,8 +193,8 @@ Check **Billing** in GCP Console to monitor usage.
 
 The deployment workflow is in `.github/workflows/deploy.yml`. Key settings:
 
-- **Region**: `us-central1` (change in `REGION` env variable)
-- **Service Name**: `xyz-website` (change in `SERVICE_NAME` env variable)
+- **Region**: `europe-west2` (change in `REGION` env variable)
+- **Service Name**: `xyz-site` (change in `SERVICE_NAME` env variable)
 - **Memory**: 256Mi
 - **CPU**: 1
 - **Max Instances**: 5
