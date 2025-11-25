@@ -1,0 +1,143 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/css/index.css')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js')
+    title CV - Nikhil Vedi
+    style.
+      .pdf-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      #pdf-viewer {
+        width: 100%;
+        border: 1px solid #ccc;
+        background: #f5f5f5;
+      }
+      .pdf-controls {
+        text-align: center;
+        margin: 20px 0;
+      }
+      .pdf-controls button {
+        padding: 10px 20px;
+        margin: 0 10px;
+        cursor: pointer;
+        background: #333;
+        color: #fff;
+        border: none;
+        font-family: 'Source Code Pro', monospace;
+      }
+      .pdf-controls button:hover {
+        background: #555;
+      }
+      .pdf-controls span {
+        margin: 0 15px;
+      }
+      .download-link {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #333;
+        color: #fff;
+        text-decoration: none;
+        font-family: 'Source Code Pro', monospace;
+      }
+      .download-link:hover {
+        background: #555;
+      }
+  body
+    .header
+      h1.page-title CV
+
+    .main-content
+      .pdf-container
+        .pdf-controls
+          button#prev-page Previous
+          span Page: 
+            span#page-num 1
+            span  / 
+            span#page-count -
+          button#next-page Next
+        canvas#pdf-viewer
+        .pdf-controls
+          a.download-link(href='/cv/download') Download PDF
+
+    .footer
+      p © 2018 WTFPL
+
+    script.
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      
+      var pdfDoc = null,
+          pageNum = 1,
+          pageRendering = false,
+          pageNumPending = null,
+          scale = 1.5,
+          canvas = document.getElementById('pdf-viewer'),
+          ctx = canvas.getContext('2d');
+
+      function renderPage(num) {
+        pageRendering = true;
+        pdfDoc.getPage(num).then(function(page) {
+          var viewport = page.getViewport({scale: scale});
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+
+          var renderContext = {
+            canvasContext: ctx,
+            viewport: viewport
+          };
+          var renderTask = page.render(renderContext);
+
+          renderTask.promise.then(function() {
+            pageRendering = false;
+            if (pageNumPending !== null) {
+              renderPage(pageNumPending);
+              pageNumPending = null;
+            }
+          });
+        });
+
+        document.getElementById('page-num').textContent = num;
+      }
+
+      function queueRenderPage(num) {
+        if (pageRendering) {
+          pageNumPending = num;
+        } else {
+          renderPage(num);
+        }
+      }
+
+      function onPrevPage() {
+        if (pageNum <= 1) {
+          return;
+        }
+        pageNum--;
+        queueRenderPage(pageNum);
+      }
+      document.getElementById('prev-page').addEventListener('click', onPrevPage);
+
+      function onNextPage() {
+        if (pageNum >= pdfDoc.numPages) {
+          return;
+        }
+        pageNum++;
+        queueRenderPage(pageNum);
+      }
+      document.getElementById('next-page').addEventListener('click', onNextPage);
+
+      pdfjsLib.getDocument('/resume/cv.pdf').promise.then(function(pdfDoc_) {
+        pdfDoc = pdfDoc_;
+        document.getElementById('page-count').textContent = pdfDoc.numPages;
+        renderPage(pageNum);
+      }).catch(function(error) {
+        console.log('Error loading PDF:', error);
+        document.getElementById('pdf-viewer').style.display = 'none';
+        var container = document.querySelector('.pdf-container');
+        var msg = document.createElement('p');
+        msg.textContent = 'Please upload a CV PDF file to /static/resume/cv.pdf';
+        msg.style.textAlign = 'center';
+        msg.style.padding = '50px';
+        container.insertBefore(msg, container.firstChild);
+      });

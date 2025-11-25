@@ -40,15 +40,15 @@ body {
   margin: 50px auto;
   max-width: 600px;
 }
-.image-block {
-  text-align: center
-}
-.img {
-  max-height: 400px
-}
 .main-content p {
   line-height: 1.6;
   margin-bottom: 1.7em;
+}
+.main-content image-block {
+  text-align: center;
+}
+.main-content img {
+  max-height: 200px;
 }
 .footer {
   margin: 50px auto;
