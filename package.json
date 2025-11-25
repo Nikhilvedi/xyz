@@ -19,7 +19,7 @@
   "author": "Nikhil Vedi",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.2",
+    "express": "^5.1.0",
     "jade": "^1.11.0",
     "morgan": "^1.9.0",
     "nodemon": "^1.17.4",
