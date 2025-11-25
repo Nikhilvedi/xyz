@@ -2,9 +2,9 @@ var express = require('express'),
   logger = require('morgan'),
   app = express(),
   template = require('jade').compileFile(__dirname + '/source/templates/homepage.jade'),
-    starwars = require('jade').compileFile(__dirname + '/source/templates/starwars.jade'),
-    lily = require('jade').compileFile(__dirname + '/source/templates/lily.jade'),
-    pod = require('jade').compileFile(__dirname + '/source/templates/pod.jade')
+  starwars = require('jade').compileFile(__dirname + '/source/templates/starwars.jade'),
+  pod = require('jade').compileFile(__dirname + '/source/templates/pod.jade'),
+  cv = require('jade').compileFile(__dirname + '/source/templates/cv.jade')
 
 app.use(logger('dev'));
 app.use(express.static(__dirname + '/static'));
@@ -37,15 +37,20 @@ app.get('/hellothere', function(req, res) {
   res.send("General Kenobi");
 })
 
-app.get('/lily', function(req, res, next) {
+app.get('/cv', function(req, res, next) {
   try {
-    var html = lily({
-      title: 'Home'
+    var html = cv({
+      title: 'CV'
     })
     res.send(html)
   } catch (e) {
     next(e)
   }
+})
+
+app.get('/cv/download', function(req, res) {
+  var file = __dirname + '/static/resume/cv.pdf';
+  res.download(file);
 })
 
 app.get('/thisiswherethefunbegins', function(req, res, next) {
