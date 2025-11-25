@@ -84,17 +84,26 @@ jobs:
 
     - name: Run smoke test
       run: |
-        # Wait a moment for deployment to be ready
-        sleep 10
+        # Retry loop with exponential backoff for deployment readiness
+        MAX_RETRIES=5
+        RETRY_DELAY=5
         
-        # Test the homepage
-        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" $SERVICE_URL)
-        if [ "$HTTP_CODE" = "200" ]; then
-          echo "✅ Health check passed! (HTTP $HTTP_CODE)"
-        else
-          echo "❌ Health check failed! (HTTP $HTTP_CODE)"
-          exit 1
-        fi
+        for i in $(seq 1 $MAX_RETRIES); do
+          echo "Attempt $i of $MAX_RETRIES..."
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 --retry 3 --retry-delay 2 $SERVICE_URL || echo "000")
+          
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Health check passed! (HTTP $HTTP_CODE)"
+            exit 0
+          fi
+          
+          echo "HTTP $HTTP_CODE - Waiting ${RETRY_DELAY}s before retry..."
+          sleep $RETRY_DELAY
+          RETRY_DELAY=$((RETRY_DELAY * 2))
+        done
+        
+        echo "❌ Health check failed after $MAX_RETRIES attempts"
+        exit 1
 
     - name: Display deployment info
       run: |

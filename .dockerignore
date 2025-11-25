@@ -4,4 +4,6 @@ npm-debug.log
 .gitignore
 .DS_Store
 .idea
-*.md
+GCP_DEPLOYMENT.md
+README.md
+readme.md
