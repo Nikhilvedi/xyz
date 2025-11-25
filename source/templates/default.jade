@@ -1,15 +1,68 @@
 doctype html
 html
   head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
     link(rel='stylesheet', href='/css/index.css')
-    script(src='/js/default.js')
-    title Home
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    script(src='/js/default.js', defer)
+    title Nikhil Vedi - Portfolio
   body
-    .header
-      h1.page-title Nikhil Vedi
+    //- Navigation
+    nav.navbar
+      .nav-brand
+        a(href='/') NV
+      .nav-toggle#navToggle
+        span.bar
+        span.bar
+        span.bar
+      ul.nav-menu#navMenu
+        li.nav-item
+          a.nav-link(href='#home') Home
+        li.nav-item
+          a.nav-link(href='#about') About
+        li.nav-item
+          a.nav-link(href='/cv') CV
+        li.nav-item
+          a.nav-link(href='#contact') Contact
 
-    .main-content
-        .p Okay, so maybe i'm finally going to do something with this.. 🤷🏽‍
+    //- Hero Section
+    section.hero#home
+      .hero-content
+        .hero-image
+          .profile-placeholder
+            i.fas.fa-user
+        h1.hero-title Nikhil Vedi
+        .hero-subtitle
+          span.typed-text
+          span.cursor |
+        p.hero-description Software Developer | Tech Enthusiast | Problem Solver
+        .hero-cta
+          a.btn.btn-primary(href='#about') Learn More
+          a.btn.btn-secondary(href='/cv') View CV
 
-    .footer
-      p © 2018 WTFPL
+    //- About Section
+    section.about#about
+      .container
+        h2.section-title About Me
+        .about-content
+          p.about-text Welcome to my corner of the internet! I'm passionate about building elegant solutions to complex problems. With a love for clean code and creative thinking, I enjoy turning ideas into reality.
+          p.about-text When I'm not coding, you'll find me exploring new technologies, contributing to open source, or enjoying a good cup of coffee.
+
+    //- Contact Section
+    section.contact#contact
+      .container
+        h2.section-title Get In Touch
+        p.contact-text Feel free to reach out if you'd like to connect!
+        .social-links
+          a.social-link(href='https://github.com/Nikhilvedi', target='_blank', aria-label='GitHub')
+            i.fab.fa-github
+          a.social-link(href='https://linkedin.com', target='_blank', aria-label='LinkedIn')
+            i.fab.fa-linkedin
+          a.social-link(href='mailto:hello@nikhilvedi.xyz', aria-label='Email')
+            i.fas.fa-envelope
+
+    //- Footer
+    footer.footer
+      .container
+        p © #{new Date().getFullYear()} Nikhil Vedi. Built with ❤️
