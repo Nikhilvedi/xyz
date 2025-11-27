@@ -1,0 +1,59 @@
+# Home Server VM Template
+#
+# Suggested configuration for a general-purpose home server VM
+# running services like Home Assistant, Plex, file sharing, etc.
+#
+# Recommended OS: Ubuntu Server 22.04 LTS or Debian 12
+
+name: home-server
+description: Main home server for running services
+ostype: l26
+machine: q35
+bios: ovmf
+
+# Hardware resources - adjust based on your needs
+cores: 4
+sockets: 1
+memory: 8192
+balloon: 4096
+
+# CPU settings
+cpu: host
+numa: 0
+
+# Network interface
+net0: virtio=<MAC_ADDRESS>,bridge=vmbr0,firewall=1
+
+# Boot disk - 100GB recommended for services
+scsi0: local-lvm:vm-101-disk-0,size=100G,ssd=1,discard=on
+scsihw: virtio-scsi-pci
+
+# Data disk for storage (optional, if not using NAS)
+# scsi1: local-lvm:vm-101-disk-1,size=500G
+
+# EFI disk (disk-2 to leave disk-1 available for optional data disk)
+efidisk0: local-lvm:vm-101-disk-2,efitype=4m,pre-enrolled-keys=1
+
+# Boot order
+boot: order=scsi0
+
+# Display
+vga: virtio
+
+# QEMU guest agent for better integration
+agent: 1
+
+# Start at boot - high priority
+onboot: 1
+startup: order=1
+
+# Hot-plug capabilities
+hotplug: disk,network,usb
+
+# USB passthrough example (for Z-Wave/Zigbee stick)
+# usb0: host=1-1,usb3=1
+
+# PCI passthrough example (for GPU)
+# hostpci0: 0000:01:00,pcie=1,x-vga=1
+
+protection: 0

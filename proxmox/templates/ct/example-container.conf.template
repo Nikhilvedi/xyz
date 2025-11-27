@@ -1,0 +1,51 @@
+# Proxmox LXC Container Configuration Template
+#
+# This is an example LXC container configuration file.
+# Copy and modify for your specific needs.
+#
+# Save as: /etc/pve/lxc/<CTID>.conf
+
+# General container settings
+hostname: example-container
+description: Example Ubuntu Container
+ostype: ubuntu
+
+# Resource limits
+arch: amd64
+cores: 2
+memory: 2048
+swap: 512
+
+# Storage
+rootfs: local-lvm:vm-200-disk-0,size=16G
+
+# Network configuration
+net0: name=eth0,bridge=vmbr0,firewall=1,hwaddr=<MAC_ADDRESS>,ip=dhcp,type=veth
+
+# Additional mount points (optional)
+# mp0: /host/path,mp=/container/path,backup=0
+
+# Features
+features: nesting=1
+
+# Start at boot
+onboot: 1
+startup: order=3
+
+# Unprivileged container (more secure)
+unprivileged: 1
+
+# Protection
+protection: 0
+
+# TTY settings
+tty: 2
+
+# Root password (set during creation, removed after)
+# password: <removed>
+
+# SSH public keys
+# ssh-public-keys: ssh-rsa AAAA...
+
+# Lock (prevents modifications during operations)
+# lock: <none>
