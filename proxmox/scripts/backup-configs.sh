@@ -102,8 +102,8 @@ backup_vm_configs() {
         for vm_conf in /etc/pve/qemu-server/*.conf; do
             if [ -f "$vm_conf" ]; then
                 vm_id=$(basename "$vm_conf" .conf)
-                # Remove sensitive information (if any)
-                grep -v "^#" "$vm_conf" | grep -v "smbios1:" > "$TEMPLATES_DIR/vm/${vm_id}.conf" || true
+                # Copy configuration, removing only SMBIOS (contains unique identifiers)
+                grep -v "smbios1:" "$vm_conf" > "$TEMPLATES_DIR/vm/${vm_id}.conf" || true
                 info "  ✓ Backed up VM $vm_id"
             fi
         done
@@ -121,8 +121,8 @@ backup_ct_configs() {
         for ct_conf in /etc/pve/lxc/*.conf; do
             if [ -f "$ct_conf" ]; then
                 ct_id=$(basename "$ct_conf" .conf)
-                # Remove potentially sensitive information
-                grep -v "^#" "$ct_conf" > "$TEMPLATES_DIR/ct/${ct_id}.conf" || true
+                # Copy container configuration as-is
+                cp "$ct_conf" "$TEMPLATES_DIR/ct/${ct_id}.conf" || true
                 info "  ✓ Backed up container $ct_id"
             fi
         done

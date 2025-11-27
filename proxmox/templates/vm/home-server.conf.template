@@ -31,8 +31,8 @@ scsihw: virtio-scsi-pci
 # Data disk for storage (optional, if not using NAS)
 # scsi1: local-lvm:vm-101-disk-1,size=500G
 
-# EFI disk
-efidisk0: local-lvm:vm-101-disk-1,efitype=4m,pre-enrolled-keys=1
+# EFI disk (disk-2 to leave disk-1 available for optional data disk)
+efidisk0: local-lvm:vm-101-disk-2,efitype=4m,pre-enrolled-keys=1
 
 # Boot order
 boot: order=scsi0
