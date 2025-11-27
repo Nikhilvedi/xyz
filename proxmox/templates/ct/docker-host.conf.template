@@ -1,0 +1,41 @@
+# Docker Host Container Template
+#
+# LXC container optimized for running Docker
+# Useful for containerized services with lower overhead than full VM
+#
+# Note: Requires nesting feature enabled
+
+hostname: docker-host
+description: LXC container for Docker services
+ostype: ubuntu
+
+# Resources - adjust based on needs
+arch: amd64
+cores: 4
+memory: 4096
+swap: 1024
+
+# Storage - larger for Docker images
+rootfs: local-lvm:vm-201-disk-0,size=50G
+
+# Network
+net0: name=eth0,bridge=vmbr0,firewall=1,hwaddr=<MAC_ADDRESS>,ip=dhcp,type=veth
+
+# Essential features for Docker
+features: keyctl=1,nesting=1
+
+# Mount Docker volumes from host (optional)
+# mp0: /mnt/docker-data,mp=/var/lib/docker,backup=0
+
+# Privileged if needed for certain Docker features
+# (less secure, only use if necessary)
+unprivileged: 1
+
+# Start at boot
+onboot: 1
+startup: order=2
+
+# TTY
+tty: 2
+
+protection: 0

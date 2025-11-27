@@ -1,0 +1,56 @@
+# Proxmox VM Configuration Template
+# 
+# This is an example VM configuration file.
+# Copy and modify for your specific needs.
+#
+# Save as: /etc/pve/qemu-server/<VMID>.conf
+
+# General VM settings
+name: example-vm
+description: Example Ubuntu Server VM
+ostype: l26
+machine: q35
+bios: ovmf
+
+# Hardware resources
+cores: 2
+sockets: 1
+memory: 4096
+balloon: 2048
+
+# CPU settings
+cpu: host
+numa: 0
+
+# Network interface (virtio for best performance)
+net0: virtio=<MAC_ADDRESS>,bridge=vmbr0,firewall=1
+
+# Storage - modify path according to your storage
+scsi0: local-lvm:vm-100-disk-0,size=32G,ssd=1,discard=on
+scsihw: virtio-scsi-pci
+boot: order=scsi0
+
+# EFI disk for UEFI boot
+efidisk0: local-lvm:vm-100-disk-1,efitype=4m,pre-enrolled-keys=1
+
+# CDROM/ISO for installation
+# ide2: local:iso/ubuntu-22.04-live-server-amd64.iso,media=cdrom
+
+# Display and input
+vga: virtio
+agent: 1
+
+# Cloud-init settings (if using cloud-init enabled image)
+# cicustom: user=local:snippets/user-data.yaml
+# ipconfig0: ip=dhcp
+# sshkeys: ssh-rsa AAAA...
+
+# Start at boot
+onboot: 1
+startup: order=2
+
+# Hot-plug settings
+hotplug: disk,network,usb
+
+# Protection (prevents accidental deletion)
+protection: 0
