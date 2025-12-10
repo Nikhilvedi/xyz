@@ -1,0 +1,53 @@
+# SBT specific
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+.history
+.cache
+.lib/
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+.metals/
+.bloop/
+
+# Mac
+.DS_Store
+
+# Log files
+*.log
+
+# Metals
+metals.sbt
+
+# Build artifacts
+*.class
+*.jar
+!project/*.jar
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.swp
+*~
+
+# Coverage reports
+coverage/
