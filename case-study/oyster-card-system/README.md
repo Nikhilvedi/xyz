@@ -85,7 +85,7 @@ erDiagram
 Key attributes (examples):
 - `CUSTOMER(id, name, email, phone, kyc_status)`
 - `ACCOUNT(id, customer_id, status, created_at)`
-- `CARD(id, account_id, pan_token, status, expiry, validator_key_id)`
+- `CARD(id, account_id, card_token, status, expiry, validator_key_id)`
 - `WALLET(id, account_id, balance, currency, auto_top_up_rule_id)`
 - `TRANSACTION(id, wallet_id, type, amount, reference, fare_charge_id?, status, created_at)`
 - `TAP_EVENT(id, card_id, station_id?, route_id?, device_id, direction[in|out], ts, validator_seq)`
