@@ -7,6 +7,7 @@ A comprehensive travel card management system implemented in Scala using functio
 - [Overview](#overview)
 - [Features](#features)
 - [Architecture](#architecture)
+- [Database](#database)
 - [Getting Started](#getting-started)
 - [Module Structure](#module-structure)
 - [Usage Examples](#usage-examples)
@@ -82,6 +83,12 @@ oyster-travel-system/
 ├── project/
 │   ├── build.properties      # SBT version
 │   └── plugins.sbt           # SBT plugins
+├── database/                 # PostgreSQL database schema
+│   ├── schema.sql           # Complete database schema
+│   ├── docker-compose.yml   # Docker setup for PostgreSQL
+│   ├── migrations/          # Database migration scripts
+│   └── README.md            # Database documentation
+├── ERD.md                    # Entity Relationship Diagram
 └── modules/
     ├── domain/               # Core domain models and business rules
     ├── account-service/      # Account and card management
@@ -105,6 +112,46 @@ domain (no dependencies)
           └── demo → all modules
 ```
 
+## 🗄️ Database
+
+The system includes a complete PostgreSQL database schema for persistent storage.
+
+### Database Features
+
+- **Complete Schema** - Tables, indexes, views, and constraints
+- **ERD Diagram** - Visual entity relationship diagram (see [ERD.md](ERD.md))
+- **Seed Data** - Pre-populated zones and stations
+- **Docker Support** - Easy local setup with Docker Compose
+- **Migration Support** - Ready for Flyway, Liquibase, or golang-migrate
+
+### Quick Database Setup
+
+```bash
+# Start PostgreSQL using Docker
+cd database
+docker-compose up -d
+
+# The schema is automatically applied on first start
+# Or apply manually:
+docker exec -i oyster-postgres psql -U oyster -d oyster_db < schema.sql
+
+# Connect to the database
+docker exec -it oyster-postgres psql -U oyster -d oyster_db
+```
+
+### Database Tables
+
+- **account** - Customer accounts
+- **card** - Travel cards
+- **wallet** - Card balances (one-to-one with card)
+- **transaction** - Financial transaction history
+- **journey** - Travel journeys (tap-in to tap-out)
+- **station** - Transport stations
+- **zone** - Transport zones (1-9)
+- **station_zone** - Many-to-many station-zone relationships
+
+See [database/README.md](database/README.md) for complete documentation.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -112,6 +159,8 @@ domain (no dependencies)
 - **JDK 11 or higher** - Java Development Kit
 - **SBT 1.9.7 or higher** - Scala Build Tool
 - **Scala 2.13.12** - Scala programming language
+- **Docker** (optional) - For running PostgreSQL locally
+- **PostgreSQL 12+** (optional) - If not using Docker
 
 ### Installation
 
