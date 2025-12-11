@@ -150,7 +150,11 @@ docker exec -it oyster-postgres psql -U oyster -d oyster_db
 - **zone** - Transport zones (1-9)
 - **station_zone** - Many-to-many station-zone relationships
 
-See [database/README.md](database/README.md) for complete documentation.
+**📖 Database Documentation:**
+- [DATABASE_GUIDE.md](DATABASE_GUIDE.md) - Quick start guide
+- [ERD.md](ERD.md) - Entity Relationship Diagram
+- [database/README.md](database/README.md) - Complete reference
+- [database/schema.sql](database/schema.sql) - PostgreSQL schema
 
 ## 🚀 Getting Started
 
