@@ -8,9 +8,11 @@
     "watch-css": "stylus source/stylesheets/index.styl -o static/css -w",
     "clean": "rm -rf static/css && mkdir -p static/css",
     "build": "npm run clean && npm run build-css",
-    "watch": "npm run clean && npm run watch-css & nodemon server -e js,jade",
+    "watch": "npm run clean && npm run watch-css & nodemon server -e js,pug",
     "start": "node server",
-    "heroku-postbuild": "echo Skip build on Heroku"
+    "heroku-postbuild": "echo Skip build on Heroku",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -20,12 +22,15 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.2",
-    "jade": "^1.11.0",
-    "morgan": "^1.9.0",
-    "nodemon": "^1.17.4",
-    "pdfreader": "^0.2.5",
-    "stylus": "^0.54.5",
-    "youtube-player": "^5.5.1"
+    "morgan": "^1.10.0",
+    "pug": "^3.0.3",
+    "stylus": "^0.54.8",
+    "youtube-player": "^5.6.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.18.0",
+    "nodemon": "^3.1.9"
   },
   "heroku-run-build-script": true
 }
