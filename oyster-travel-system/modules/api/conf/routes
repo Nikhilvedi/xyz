@@ -1,0 +1,42 @@
+# Routes
+# This file defines all application routes for the Oyster Travel System API
+# ~~~~
+
+# Home page
+GET     /                           controllers.HomeController.index()
+
+# Account endpoints
+POST    /api/accounts               controllers.AccountController.createAccount()
+GET     /api/accounts/:id           controllers.AccountController.getAccount(id: String)
+GET     /api/accounts               controllers.AccountController.listAccounts()
+PUT     /api/accounts/:id           controllers.AccountController.updateAccount(id: String)
+
+# Card endpoints
+POST    /api/cards                  controllers.CardController.orderCard()
+GET     /api/cards/:id              controllers.CardController.getCard(id: String)
+GET     /api/cards                  controllers.CardController.listCards()
+POST    /api/cards/:id/activate     controllers.CardController.activateCard(id: String)
+POST    /api/cards/:id/block        controllers.CardController.blockCard(id: String)
+POST    /api/cards/:id/cancel       controllers.CardController.cancelCard(id: String)
+
+# Wallet endpoints
+POST    /api/wallets                controllers.WalletController.createWallet()
+GET     /api/wallets/:cardId        controllers.WalletController.getWallet(cardId: String)
+POST    /api/wallets/:cardId/topup  controllers.WalletController.topUp(cardId: String)
+GET     /api/wallets/:cardId/balance controllers.WalletController.getBalance(cardId: String)
+GET     /api/wallets/:cardId/transactions controllers.WalletController.getTransactions(cardId: String)
+
+# Tap/Journey endpoints
+POST    /api/tap/in                 controllers.TapController.tapIn()
+POST    /api/tap/out                controllers.TapController.tapOut()
+GET     /api/tap/preview            controllers.TapController.previewFare(from: String, to: String)
+GET     /api/journeys/:cardId       controllers.TapController.getJourneyHistory(cardId: String)
+
+# Monitoring endpoints
+GET     /api/monitoring/stats       controllers.MonitoringController.getSystemStats()
+GET     /api/monitoring/cards/:id/stats controllers.MonitoringController.getCardStats(id: String)
+GET     /api/monitoring/low-balance controllers.MonitoringController.getLowBalanceCards()
+GET     /api/monitoring/incomplete-journeys controllers.MonitoringController.getIncompleteJourneys()
+
+# Health check endpoint
+GET     /health                     controllers.HomeController.health()

@@ -41,7 +41,8 @@ lazy val root = (project in file("."))
     walletService,
     tapValidation,
     operations,
-    demo
+    demo,
+    api
   )
 
 // Domain module - contains core business logic and models
@@ -100,5 +101,20 @@ lazy val demo = (project in file("modules/demo"))
   .settings(
     name := "demo",
     commonSettings
+  )
+  .dependsOn(domain, accountService, walletService, tapValidation, operations)
+
+// API module - Play Framework REST API
+// Provides HTTP endpoints for all system operations
+lazy val api = (project in file("modules/api"))
+  .enablePlugins(PlayScala)
+  .settings(
+    name := "api",
+    commonSettings,
+    libraryDependencies ++= Seq(
+      guice,
+      "com.typesafe.play" %% "play-json" % "2.9.4",
+      "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
+    )
   )
   .dependsOn(domain, accountService, walletService, tapValidation, operations)

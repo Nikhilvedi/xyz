@@ -82,7 +82,7 @@ oyster-travel-system/
 ├── build.sbt                 # Root build configuration
 ├── project/
 │   ├── build.properties      # SBT version
-│   └── plugins.sbt           # SBT plugins
+│   └── plugins.sbt           # SBT plugins (includes Play Framework)
 ├── database/                 # PostgreSQL database schema
 │   ├── schema.sql           # Complete database schema
 │   ├── docker-compose.yml   # Docker setup for PostgreSQL
@@ -95,7 +95,8 @@ oyster-travel-system/
     ├── wallet-service/       # Wallet and transaction management
     ├── tap-validation/       # Journey and fare validation
     ├── operations/           # Monitoring and admin tools
-    └── demo/                 # Demo application
+    ├── demo/                 # Demo application
+    └── api/                  # Play Framework REST API
 ```
 
 ### Module Dependencies
@@ -107,9 +108,10 @@ domain (no dependencies)
   ├── wallet-service → domain
   └── tap-validation → domain, wallet-service
       ↑
-      └── operations → all modules
-          ↑
-          └── demo → all modules
+      ├── operations → all modules
+      │   ↑
+      │   ├── demo → all modules
+      │   └── api → all modules (Play Framework REST API)
 ```
 
 ## 🗄️ Database
@@ -310,6 +312,28 @@ monitoringService.findLowBalanceCards()
 **Key Components**:
 - `DemoApp.scala` - Complete demo showcasing system capabilities
 
+### API Module
+
+**Purpose**: REST API using Play Framework
+
+**Key Components**:
+- Controllers for all system operations (Account, Card, Wallet, Tap, Monitoring)
+- JSON serialization/deserialization
+- HTTP routing and request handling
+- Integration with cats-effect IO services
+
+**Usage**:
+```bash
+# Start the Play Framework server
+sbt api/run
+
+# Access the API
+curl http://localhost:9000/
+curl http://localhost:9000/health
+```
+
+**API Documentation**: See [modules/api/README.md](modules/api/README.md) for complete API reference
+
 ## 🔧 Building and Running
 
 ### Compile the Project
@@ -333,6 +357,31 @@ sbt demo/run
 sbt demo/assembly
 java -jar modules/demo/target/scala-2.13/demo-assembly-0.1.0-SNAPSHOT.jar
 ```
+
+### Run the Play Framework API
+
+```bash
+# Start the API server (default port 9000)
+sbt api/run
+
+# Or specify a custom port
+sbt "api/run -Dhttp.port=8080"
+
+# The API will be available at:
+# http://localhost:9000/
+```
+
+**API Endpoints:**
+- `GET /` - API information
+- `GET /health` - Health check
+- `POST /api/accounts` - Create account
+- `POST /api/cards` - Order card
+- `POST /api/wallets/:cardId/topup` - Top up wallet
+- `POST /api/tap/in` - Tap in at station
+- `POST /api/tap/out` - Tap out at station
+- `GET /api/monitoring/stats` - System statistics
+
+See the [API README](modules/api/README.md) for complete endpoint documentation.
 
 ### Run Tests
 
@@ -358,6 +407,7 @@ sbt
 compile          # Compile all projects
 test             # Run all tests
 demo/run         # Run demo application
+api/run          # Run Play Framework API
 clean            # Clean build artifacts
 reload           # Reload build configuration
 ```
