@@ -2,8 +2,9 @@
 -- Oyster Travel System - PostgreSQL Database Schema
 -- =====================================================
 -- Version: 1.0.0
--- Database: PostgreSQL 12+
+-- Database: PostgreSQL 12+ (Tested with PostgreSQL 15)
 -- Description: Complete database schema for the Oyster Travel System
+-- Note: Compatible with PostgreSQL 12 and higher. Docker setup uses PostgreSQL 15.
 -- =====================================================
 
 -- Enable UUID extension for generating UUIDs
