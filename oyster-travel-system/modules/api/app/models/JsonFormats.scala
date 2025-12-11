@@ -105,7 +105,8 @@ object JsonFormats {
     def reads(json: JsValue): JsResult[TransactionType] = json match {
       case JsString("TopUp") => JsSuccess(TransactionType.TopUp)
       case JsString("FareDeduction") => JsSuccess(TransactionType.FareDeduction)
-      case JsString("FareRefund") => JsSuccess(TransactionType.FareRefund)
+      case JsString("Refund") => JsSuccess(TransactionType.Refund)
+      case JsString("PenaltyFare") => JsSuccess(TransactionType.PenaltyFare)
       case _ => JsError("Invalid transaction type")
     }
     def writes(txType: TransactionType): JsValue = JsString(txType.toString)
