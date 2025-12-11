@@ -17,8 +17,12 @@ A comprehensive travel card management system implemented in Scala using functio
 
 ## 📚 Quick Reference Docs
 
-- **[INTERVIEW_PREP.md](INTERVIEW_PREP.md)** - 🎯 **Comprehensive interview prep explaining "why" behind all architectural decisions**
-- **[WHITEBOARD_GUIDE.md](WHITEBOARD_GUIDE.md)** - Interview prep & whiteboard drawing guide
+### 🎯 Interview Preparation (Read These First!)
+- **[INTERVIEW_CHEATSHEET.md](INTERVIEW_CHEATSHEET.md)** - 🚀 **Quick cheat sheet for last-minute review**
+- **[INTERVIEW_PREP.md](INTERVIEW_PREP.md)** - 📖 **Comprehensive guide explaining "why" behind all architectural decisions**
+- **[WHITEBOARD_GUIDE.md](WHITEBOARD_GUIDE.md)** - ✍️ **Diagrams you can draw on a whiteboard**
+
+### 📚 Technical Documentation
 - **[API_QUICK_REFERENCE.md](API_QUICK_REFERENCE.md)** - Complete API endpoint reference
 - **[ARCHITECTURE_DIAGRAM.md](ARCHITECTURE_DIAGRAM.md)** - Detailed system architecture
 - **[ERD.md](ERD.md)** - Database schema and relationships
