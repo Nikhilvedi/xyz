@@ -7,18 +7,35 @@
 └───────────────────────────────────────────────────────────────────────────┘
 
 ┌───────────────────────────────────────────────────────────────────────────┐
-│                              DEMO MODULE                                  │
-│                                                                           │
-│  ┌─────────────────────────────────────────────────────────────────┐    │
-│  │ DemoApp (IOApp)                                                 │    │
-│  │  - Account Creation Demo                                        │    │
-│  │  - Card Ordering Demo                                           │    │
-│  │  - Wallet Top-up Demo                                           │    │
-│  │  - Journey Demo (Tap-in/Tap-out)                               │    │
-│  │  - Monitoring Demo                                              │    │
-│  └─────────────────────────────────────────────────────────────────┘    │
+│                         PRESENTATION LAYER                                │
 └───────────────────────────────────────────────────────────────────────────┘
                                     │
+                    ┌───────────────┼───────────────┐
+                    ▼                               ▼
+┌──────────────────────────────┐    ┌──────────────────────────────────┐
+│      API MODULE              │    │       DEMO MODULE                │
+│   (Play Framework)           │    │                                  │
+│                              │    │  ┌────────────────────────────┐  │
+│  REST API Endpoints:         │    │  │ DemoApp (IOApp)            │  │
+│  • GET  /                    │    │  │  - Account Creation Demo   │  │
+│  • GET  /health              │    │  │  - Card Ordering Demo      │  │
+│  • POST /api/accounts        │    │  │  - Wallet Top-up Demo      │  │
+│  • POST /api/cards           │    │  │  - Journey Demo            │  │
+│  • POST /api/wallets/topup   │    │  │  - Monitoring Demo         │  │
+│  • POST /api/tap/in          │    │  └────────────────────────────┘  │
+│  • POST /api/tap/out         │    └──────────────────────────────────┘
+│  • GET  /api/monitoring/stats│
+│                              │
+│  Controllers:                │
+│  - HomeController            │
+│  - AccountController         │
+│  - CardController            │
+│  - WalletController          │
+│  - TapController             │
+│  - MonitoringController      │
+└──────────────────────────────┘
+                    │
+                    └───────────────┬───────────────┘
                                     ▼
 ┌───────────────────────────────────────────────────────────────────────────┐
 │                          OPERATIONS MODULE                                │
@@ -173,19 +190,20 @@
                               MODULE DEPENDENCIES
 ═══════════════════════════════════════════════════════════════════════════════
 
-                         demo
-                           │
-                           ▼
-                      operations
-                           │
-           ┌───────────────┼───────────────┐
-           ▼               ▼               ▼
-      account-service  wallet-service  tap-validation
-           │               │               │
-           └───────────────┼───────────────┘
-                           ▼
-                        domain
-                   (No dependencies)
+                    demo        api (Play Framework)
+                      │           │
+                      └─────┬─────┘
+                            ▼
+                       operations
+                            │
+           ┌────────────────┼────────────────┐
+           ▼                ▼                ▼
+      account-service   wallet-service   tap-validation
+           │                │                │
+           └────────────────┼────────────────┘
+                            ▼
+                          domain
+                     (No dependencies)
 
 
 ═══════════════════════════════════════════════════════════════════════════════

@@ -4,6 +4,59 @@
 
 This document describes the entity relationship diagram for the Oyster Travel System database.
 
+## 🎯 WHITEBOARD VERSION - Quick Draw Guide
+
+**For Interview Presentations:**
+
+```
+SIMPLIFIED SYSTEM VIEW:
+======================
+
+HTTP Client → Play API → Services → Database
+
+LAYERS:
+-------
+1. API Layer:     Controllers (REST endpoints)
+2. Service Layer: Business logic (AccountService, CardService, etc.)
+3. Data Layer:    PostgreSQL database
+
+CORE ENTITIES (Draw 4 boxes):
+-----------------------------
+┌─────────┐     ┌──────┐     ┌────────┐     ┌─────────┐
+│ ACCOUNT │────▶│ CARD │────▶│ WALLET │     │ JOURNEY │
+└─────────┘     └───┬──┘     └────────┘     └────┬────┘
+                    │                             │
+                    └─────────────────────────────┘
+                           transactions
+
+RELATIONSHIPS:
+--------------
+• ACCOUNT → CARD    (1:Many)  "One account has many cards"
+• CARD → WALLET     (1:1)     "Each card has one wallet"
+• CARD → TRANSACTION (1:Many) "Card has many transactions"
+• CARD → JOURNEY    (1:Many)  "Card makes many journeys"
+• STATION ↔ ZONE    (Many:Many) "Stations span zones"
+
+KEY TABLES:
+-----------
+1. ACCOUNT   (id, email, name, created_at)
+2. CARD      (id, account_id, status, issued_at)
+3. WALLET    (card_id, balance, last_updated)
+4. TRANSACTION (id, card_id, type, amount, timestamp)
+5. JOURNEY   (id, card_id, start_station, end_station, fare, status)
+6. STATION   (id, name)
+7. ZONE      (number, name)
+
+API ENDPOINTS (Key ones to mention):
+-------------------------------------
+POST /api/accounts         - Create account
+POST /api/cards            - Order card
+POST /api/wallets/topup    - Add money
+POST /api/tap/in           - Start journey
+POST /api/tap/out          - End journey
+GET  /api/monitoring/stats - View statistics
+```
+
 ## ERD Diagram
 
 ```mermaid
@@ -72,6 +125,40 @@ erDiagram
         varchar station_id PK,FK
         int zone_number PK,FK
     }
+```
+
+## System Architecture with Play Framework API
+
+```
+┌──────────────────────────────────────────────────┐
+│          HTTP CLIENTS (Web/Mobile/CLI)           │
+└────────────────────┬─────────────────────────────┘
+                     │ HTTP/REST
+                     ▼
+┌──────────────────────────────────────────────────┐
+│         PLAY FRAMEWORK API LAYER                 │
+│  Controllers:                                    │
+│  • AccountController  → AccountService           │
+│  • CardController     → CardService              │
+│  • WalletController   → WalletService            │
+│  • TapController      → TapValidationService     │
+│  • MonitoringController → MonitoringService      │
+└────────────────────┬─────────────────────────────┘
+                     │ Service Layer
+                     ▼
+┌──────────────────────────────────────────────────┐
+│          BUSINESS SERVICES LAYER                 │
+│  • AccountService  • WalletService               │
+│  • CardService     • TapValidationService        │
+└────────────────────┬─────────────────────────────┘
+                     │ Repository Pattern
+                     ▼
+┌──────────────────────────────────────────────────┐
+│              DATA LAYER                          │
+│         Database: PostgreSQL                     │
+│  Tables: ACCOUNT, CARD, WALLET, TRANSACTION,     │
+│          JOURNEY, STATION, ZONE, STATION_ZONE    │
+└──────────────────────────────────────────────────┘
 ```
 
 ## Entity Descriptions

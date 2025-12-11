@@ -15,6 +15,14 @@ A comprehensive travel card management system implemented in Scala using functio
 - [Testing](#testing)
 - [Contributing](#contributing)
 
+## 📚 Quick Reference Docs
+
+- **[WHITEBOARD_GUIDE.md](WHITEBOARD_GUIDE.md)** - Interview prep & whiteboard drawing guide
+- **[API_QUICK_REFERENCE.md](API_QUICK_REFERENCE.md)** - Complete API endpoint reference
+- **[ARCHITECTURE_DIAGRAM.md](ARCHITECTURE_DIAGRAM.md)** - Detailed system architecture
+- **[ERD.md](ERD.md)** - Database schema and relationships
+- **[modules/api/README.md](modules/api/README.md)** - Play Framework API documentation
+
 ## 🎯 Overview
 
 This project demonstrates a monolithic multi-module SBT (Scala Build Tool) project implementing an Oyster-style travel system. The system is built using functional programming principles with:
